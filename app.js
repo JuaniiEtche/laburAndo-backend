@@ -22,9 +22,17 @@ const sequelize = new Sequelize(
 
 // Importa los modelos Sequelize
 const PersonaModel = require("./models/Persona");
+const LocalidadModel = require("./models/Localidad");
+const ProvinciaModel = require("./models/Provincia");
+const PublicacionModel = require("./models/Publicacion");
+const ServicioModel = require("./models/Servicio");
 
 // Define los modelos en Sequelize
 const Persona = PersonaModel(sequelize, Sequelize.DataTypes);
+const Localidad = LocalidadModel(sequelize, Sequelize.DataTypes);
+const Provincia = ProvinciaModel(sequelize, Sequelize.DataTypes);
+const Publicacion = PublicacionModel(sequelize, Sequelize.DataTypes);
+const Servicio = ServicioModel(sequelize, Sequelize.DataTypes);
 
 // Sincroniza los modelos con la base de datos
 sequelize
