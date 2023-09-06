@@ -1,47 +1,71 @@
-// Define las asociaciones entre modelos aquí
-const Localidad = require("./Localidad.js");
-const Persona = require("./Persona.js");
-const Servicio = require("./Servicio.js");
-const Provincia = require("./Provincia.js");
-const Publicacion = require("./Publicacion.js");
+// associations.js
+const { DataTypes } = require("sequelize");
+const LocalidadModel = require("./Localidad");
+const PersonaModel = require("./Persona");
+const ProvinciaModel = require("./Provincia");
+const PublicacionModel = require("./Publicacion");
+const ServicioModel = require("./Servicio");
 
 module.exports = (sequelize) => {
+  // Importa los modelos
+  const Localidad = LocalidadModel(sequelize, DataTypes);
+  const Persona = PersonaModel(sequelize, DataTypes);
+  const Provincia = ProvinciaModel(sequelize, DataTypes);
+  const Publicacion = PublicacionModel(sequelize, DataTypes);
+  const Servicio = ServicioModel(sequelize, DataTypes);
+
+  // Define las asociaciones entre modelos
   // Asociaciones de Persona
-  Persona.hasMany(Localidad, { foreignKey: "personaId", as: "localidades" });
+  Persona.hasMany(Localidad, {
+    foreignKey: "idPersona",
+    as: "localidades",
+  });
   Persona.hasMany(Publicacion, {
-    foreignKey: "personaId",
+    foreignKey: "idPersona",
     as: "publicaciones",
   });
-  Persona.belongsTo(Localidad, { foreignKey: "localidadId", as: "localidad" });
+  Persona.belongsTo(Localidad, {
+    foreignKey: "idLocalidad",
+    as: "localidad",
+  });
 
   // Asociaciones de Localidad
   Localidad.belongsTo(Provincia, {
-    foreignKey: "provinciaId",
+    foreignKey: "idProvincia",
     as: "provincia",
   });
-  Localidad.hasMany(Persona, { foreignKey: "localidadId", as: "personas" });
+  Localidad.hasMany(Persona, {
+    foreignKey: "idLocalidad",
+    as: "personas",
+  });
   Localidad.hasMany(Publicacion, {
-    foreignKey: "localidadId",
+    foreignKey: "idLocalidad",
     as: "publicaciones",
   });
 
   // Asociaciones de Provincia
   Provincia.hasMany(Localidad, {
-    foreignKey: "provinciaId",
+    foreignKey: "idProvincia",
     as: "localidades",
   });
 
   // Asociaciones de Publicacion
   Publicacion.belongsTo(Localidad, {
-    foreignKey: "localidadId",
+    foreignKey: "idLocalidad",
     as: "localidad",
   });
-  Publicacion.belongsTo(Servicio, { foreignKey: "servicioId", as: "servicio" });
-  Publicacion.belongsTo(Persona, { foreignKey: "personaId", as: "persona" });
+  Publicacion.belongsTo(Servicio, {
+    foreignKey: "idServicio",
+    as: "servicio",
+  });
+  Publicacion.belongsTo(Persona, {
+    foreignKey: "idPersona",
+    as: "persona",
+  });
 
   // Asociaciones de Servicio
   Servicio.hasMany(Publicacion, {
-    foreignKey: "servicioId",
+    foreignKey: "idServicio",
     as: "publicaciones",
   });
 };
