@@ -1,0 +1,8 @@
+# Carpeta node_modules generada por npm/yarn
+node_modules/
+
+# Archivos de registro y archivos de respaldo
+*.log
+*.log.*
+*.backup
+*.bak
