@@ -21,6 +21,7 @@ const sequelize = new Sequelize(
 );
 
 // Importa los modelos Sequelize
+
 const PersonaModel = require("./models/Persona");
 const LocalidadModel = require("./models/Localidad");
 const ProvinciaModel = require("./models/Provincia");
@@ -34,9 +35,12 @@ const Provincia = ProvinciaModel(sequelize, Sequelize.DataTypes);
 const Publicacion = PublicacionModel(sequelize, Sequelize.DataTypes);
 const Servicio = ServicioModel(sequelize, Sequelize.DataTypes);
 
+// Configura las asociaciones
+require("./models/associations")(sequelize);
+
 // Sincroniza los modelos con la base de datos
 sequelize
-  .sync({ force: false })
+  .sync({ force: true })
   .then(() => {
     console.log("Modelos sincronizados con la base de datos");
   })
@@ -47,6 +51,7 @@ sequelize
 app.get("/", (req, res) => {});
 
 const personaRouter = require("./src/routes/personaRoute");
+
 app.use("/api", personaRouter);
 
 app.listen(port, () => {

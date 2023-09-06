@@ -10,6 +10,8 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "Servicio",
+      tableName: "servicio",
+      timestamps: false,
     }
   );
   return Servicio;
