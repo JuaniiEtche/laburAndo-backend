@@ -1,15 +1,17 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Publicacion extends Model {
-    static associate(models) {}
-  }
+  class Publicacion extends Model {}
   Publicacion.init(
     {
-      descripcion: DataTypes.STRING,
-      duracionDias: DataTypes.INTEGER,
-      fechaPublicacion: DataTypes.DATE,
-      titulo: DataTypes.STRING,
+      descripcion: { type: DataTypes.STRING, allowNull: false, unique: false },
+      duracionDias: { type: DataTypes.INTEGER, allowNull: true, unique: false },
+      fechaPublicacion: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        unique: false,
+      },
+      titulo: { type: DataTypes.STRING, allowNull: false, unique: false },
     },
     {
       sequelize,
