@@ -1,29 +1,19 @@
 // associations.js
-const { DataTypes } = require("sequelize");
-const LocalidadModel = require("./Localidad");
-const PersonaModel = require("./Persona");
-const ProvinciaModel = require("./Provincia");
-const PublicacionModel = require("./Publicacion");
-const ServicioModel = require("./Servicio");
+const DataTypes = require("sequelize");
+const Localidad = require("./Localidad");
+const Persona = require("./Persona");
+const Provincia = require("./Provincia");
+const Publicacion = require("./Publicacion");
+const Servicio = require("./Servicio");
 
-module.exports = (sequelize) => {
-  // Importa los modelos
-  const Localidad = LocalidadModel(sequelize, DataTypes);
-  const Persona = PersonaModel(sequelize, DataTypes);
-  const Provincia = ProvinciaModel(sequelize, DataTypes);
-  const Publicacion = PublicacionModel(sequelize, DataTypes);
-  const Servicio = ServicioModel(sequelize, DataTypes);
-
+module.exports = () => {
   // Define las asociaciones entre modelos
   // Asociaciones de Persona
-  Persona.hasMany(Localidad, {
-    foreignKey: "idPersona",
-    as: "localidades",
-  });
   Persona.hasMany(Publicacion, {
     foreignKey: "idPersona",
     as: "publicaciones",
   });
+
   Persona.belongsTo(Localidad, {
     foreignKey: "idLocalidad",
     as: "localidad",
