@@ -16,6 +16,9 @@ const bodyParser = require("body-parser");
 const app = express();
 const port = 3000;
 
+// Se configuran  las asociaciones entre los modelos
+require("./src/models/associations")(sequelize);
+
 //Configuraciones propias de la instancia de la aplicacion express
 app.use(morgan("dev"));
 
