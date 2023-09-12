@@ -3,6 +3,6 @@ const personaController = require("../controllers/personaController.js");
 const personaRouter = express.Router();
 
 //Ejemplo
-personaRouter.get("/user", personaController.showProfile);
+personaRouter.post("/usuario", personaController.altaPersona);
 
 module.exports = personaRouter;
