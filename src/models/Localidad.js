@@ -4,6 +4,7 @@ const Localidad = sequelize.define(
   "Localidad",
   {
     nombre: { type: DataTypes.STRING, allowNull: false, unique: true },
+    idProvincia: { type: DataTypes.INTEGER, allowNull: false, unique: false },
   },
   {
     tableName: "localidad",

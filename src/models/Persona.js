@@ -9,6 +9,7 @@ const Persona = sequelize.define(
     telefono: { type: DataTypes.STRING, allowNull: false, unique: true },
     usuario: { type: DataTypes.STRING, allowNull: false, unique: true },
     clave: { type: DataTypes.STRING, allowNull: false, unique: false },
+    idLocalidad: { type: DataTypes.INTEGER, allowNull: false, unique: false },
   },
   { modelName: "Persona", tableName: "persona", timestamps: false }
 );
