@@ -11,6 +11,9 @@ const Publicacion = sequelize.define(
       unique: false,
     },
     titulo: { type: DataTypes.STRING, allowNull: false, unique: false },
+    idPersona: { type: DataTypes.INTEGER, allowNull: false, unique: false },
+    idLocalidad: { type: DataTypes.INTEGER, allowNull: false, unique: false },
+    idServicio: { type: DataTypes.INTEGER, allowNull: false, unique: false },
   },
   {
     tableName: "publicacion",
