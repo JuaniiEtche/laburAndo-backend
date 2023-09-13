@@ -10,6 +10,8 @@ const Servicio = require("./src/models/Servicio");
 // Se traen las rutas para gestionar los distintos recursos
 const personaRouter = require("./src/routes/personaRoute");
 const publicacionRouter = require("./src/routes/publicacionRoute");
+const provinciaRouter = require("./src/routes/provinciaRoute");
+
 const bodyParser = require("body-parser");
 
 // Se crea la instancia de aplicacion express y se determina el puerto en el que va a escuchar el servidor
@@ -37,6 +39,7 @@ sequelize
 
 app.use("/api", personaRouter);
 app.use("/api/", publicacionRouter);
+app.use("/api", provinciaRouter);
 
 app.listen(port, () => {
   console.log(`La aplicación está escuchando en el puerto ${port}`);
