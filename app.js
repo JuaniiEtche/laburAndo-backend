@@ -12,6 +12,7 @@ const personaRouter = require("./src/routes/personaRoute");
 const publicacionRouter = require("./src/routes/publicacionRoute");
 const provinciaRouter = require("./src/routes/provinciaRoute");
 const localidadRouter = require("./src/routes/localidadRoute");
+const servicioRouter = require("./src/routes/servicioRoute");
 const bodyParser = require("body-parser");
 
 // Se crea la instancia de aplicacion express y se determina el puerto en el que va a escuchar el servidor
@@ -41,6 +42,7 @@ app.use("/api", personaRouter);
 app.use("/api", provinciaRouter);
 app.use("/api", publicacionRouter);
 app.use("/api", localidadRouter);
+app.use("/api", servicioRouter);
 
 app.listen(port, () => {
   console.log(`La aplicación está escuchando en el puerto ${port}`);
