@@ -5,7 +5,7 @@ const personaRouter = express.Router();
 
 // Ruta para crear una nueva persona con manejo de errores
 personaRouter.post("/usuario", async (req, res, next) => {
-  await personaController.altaPersona(req, res, next, req.body);
+  await personaController.altaPersona(req, res, next);
 });
 
 module.exports = personaRouter;
