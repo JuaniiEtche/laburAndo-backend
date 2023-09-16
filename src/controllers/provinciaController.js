@@ -1,20 +1,14 @@
+// Importa el modelo de Provincia
 const Provincia = require("../models/Provincia");
 
 class provinciaController {
-  async traerProvincias(req, res) {
+  // Función asincrónica para traer todas las provincias
+  async traerProvincias() {
     try {
-      const provincias = await Provincia.findAll();
-
-      res.status(200).json({
-        Mensaje: "Provincias traídas con éxito",
-        Exito: true,
-        provincias: provincias,
-      });
+      // Busca y devuelve todas las provincias en la base de datos
+      return await Provincia.findAll();
     } catch (error) {
-      res.status(500).json({
-        Mensaje: "No se pudieron traer las provincias",
-        Exito: false,
-      });
+      throw error; // Lanzar el error para que se maneje en el middleware de manejo de errores
     }
   }
 }
