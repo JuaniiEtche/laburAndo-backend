@@ -11,6 +11,7 @@ const Servicio = require("./src/models/Servicio");
 const personaRouter = require("./src/routes/personaRoute");
 const publicacionRouter = require("./src/routes/publicacionRoute");
 const bodyParser = require("body-parser");
+const autenticacionRouter = require("./src/routes/autenticacionRoute");
 
 // Se crea la instancia de aplicacion express y se determina el puerto en el que va a escuchar el servidor
 const app = express();
@@ -35,6 +36,7 @@ sequelize
     console.error("Error al sincronizar modelos:", err);
   });
 
+app.use("/api", autenticacionRouter);
 app.use("/api", personaRouter);
 app.use("/api/", publicacionRouter);
 
