@@ -1,19 +1,41 @@
+// Importa los modelos de Localidad, Persona, Publicacion y Servicio
+const Localidad = require("../models/Localidad");
+const Persona = require("../models/Persona");
 const Publicacion = require("../models/Publicacion");
+const Servicio = require("../models/Servicio");
 
 class publicacionController {
-  async altaPublicacion(req, res) {
+  // Función asincrónica para dar de alta una publicación
+  async altaPublicacion(publicacionData) {
     try {
-      const publicacionData = req.body;
+      // Crea un nuevo registro de publicación en la base de datos utilizando los datos proporcionados
       await Publicacion.create(publicacionData);
+    } catch (error) {
+      throw error; // Lanzar el error para que se maneje en el middleware de manejo de errores
+    }
+  }
 
-      res.status(201).json({
-        Mensaje: "Publicación creada con éxito",
-        Exito: true,
+  // Función asincrónica para traer todas las publicaciones
+  async traerPublicaciones() {
+    try {
+      // Busca y devuelve todas las publicaciones en la base de datos
+      return await Publicacion.findAll({
+        include: [
+          {
+            model: Localidad,
+            as: "localidad",
+            attributes: ["nombre"],
+          },
+          {
+            model: Servicio,
+            as: "servicio",
+            attributes: ["nombre"],
+          },
+        ],
+        attributes: ["id", "titulo", "fechaPublicacion"],
       });
     } catch (error) {
-      res
-        .status(500)
-        .json({ Mensaje: "No se pudo crear la publicación", Exito: false });
+      throw error; // Lanzar el error para que se maneje en el middleware de manejo de errores
     }
   }
 }
