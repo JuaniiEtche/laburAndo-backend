@@ -5,15 +5,7 @@ const personaRouter = express.Router();
 
 // Ruta para crear una nueva persona con manejo de errores
 personaRouter.post("/usuario", async (req, res, next) => {
-  try {
-    await personaController.altaPersona(req.body);
-    res.status(201).json({
-      Mensaje: "Persona creada con éxito",
-      Exito: true,
-    });
-  } catch (error) {
-    next(error); // Delega el manejo del error al middleware de manejo de errores global
-  }
+  await personaController.altaPersona(req, res, next, req.body);
 });
 
 module.exports = personaRouter;
