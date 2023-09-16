@@ -3,15 +3,14 @@ const Persona = require("../models/Persona");
 const Jwt = require("../models/Jwt");
 
 class AutenticacionController {
-  async login(req, res) {
+  async login(req, res, next) {
     const campoIdentificador = req.body["email"] || req.body["usuario"];
     const password = req.body["password"];
 
     if (!campoIdentificador) {
-      return res.status(400).json({
-        Mensaje: "Campo de identificación no proporcionado",
-        Exito: false,
-      });
+      let e = new Error();
+      e.statusCode = 400;
+      next(e);
     }
 
     try {
@@ -28,10 +27,9 @@ class AutenticacionController {
       }
 
       if (!usuario) {
-        return res.status(401).json({
-          Mensaje: "Usuario/Contraseña incorrectos",
-          Exito: false,
-        });
+        let e = new Error();
+        e.statusCode = 401;
+        next(e);
       }
 
       const esCorrectaLaPassword = await bcrypt.compare(
@@ -47,17 +45,12 @@ class AutenticacionController {
         const token = await Jwt.crearToken(user);
         return res.json({ token });
       } else {
-        return res.status(401).json({
-          Mensaje: "Usuario/Contraseña incorrectos",
-          Exito: false,
-        });
+        let e = new Error();
+        e.statusCode = 401;
+        next(e);
       }
     } catch (error) {
-      console.error("Error en la autenticación:", error);
-      return res.status(500).json({
-        Mensaje: "Error en el servidor",
-        Exito: false,
-      });
+      next(error);
     }
   }
 }

@@ -6,20 +6,25 @@ const Servicio = require("../models/Servicio");
 
 class publicacionController {
   // Función asincrónica para dar de alta una publicación
-  async altaPublicacion(publicacionData) {
+  async altaPublicacion(req, res, next) {
     try {
+      const publicacionData = req.body;
       // Crea un nuevo registro de publicación en la base de datos utilizando los datos proporcionados
       await Publicacion.create(publicacionData);
+      res.status(201).json({
+        Mensaje: "Publicación creada con éxito",
+        Exito: true,
+      });
     } catch (error) {
-      throw error; // Lanzar el error para que se maneje en el middleware de manejo de errores
+      next(error); // Lanzar el error para que se maneje en el middleware de manejo de errores
     }
   }
 
   // Función asincrónica para traer todas las publicaciones
-  async traerPublicaciones() {
+  async traerPublicaciones(req, res, next) {
     try {
       // Busca y devuelve todas las publicaciones en la base de datos
-      return await Publicacion.findAll({
+      let publicaciones = await Publicacion.findAll({
         include: [
           {
             model: Localidad,
@@ -34,8 +39,12 @@ class publicacionController {
         ],
         attributes: ["id", "titulo", "fechaPublicacion"],
       });
+      res.status(200).json({
+        Mensaje: "Publicaciones traídas con éxito",
+        publicaciones: publicaciones,
+      });
     } catch (error) {
-      throw error; // Lanzar el error para que se maneje en el middleware de manejo de errores
+      next(error); // Lanzar el error para que se maneje en el middleware de manejo de errores
     }
   }
 }
