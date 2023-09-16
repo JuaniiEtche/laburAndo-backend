@@ -4,7 +4,7 @@ const Provincia = require("../models/Provincia");
 
 class localidadController {
   // Función asincrónica para traer localidades por provincia
-  async traerLocalidadesPorProvincia(req) {
+  async traerLocalidadesPorProvincia(req, res, next) {
     try {
       const { nombreProvincia } = req.body;
 
@@ -23,9 +23,12 @@ class localidadController {
         where: { idProvincia: provincia.id },
       });
 
-      return localidades; // Devuelve las localidades en lugar de enviar la respuesta directamente
+      res.status(200).json({
+        Mensaje: "Localidades de la provincia traídas con éxito",
+        localidades: localidades, // Incluye localidades en la respuesta JSON
+      });
     } catch (error) {
-      throw error; // Lanzar el error para que se maneje en el middleware de manejo de errores
+      next(error); // Lanzar el error para que se maneje en el middleware de manejo de errores
     }
   }
 }

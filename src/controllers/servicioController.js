@@ -3,12 +3,16 @@ const Servicio = require("../models/Servicio");
 
 class servicioController {
   // Función asincrónica para traer todos los servicios
-  async traerServicios() {
+  async traerServicios(req, res, next) {
     try {
       // Busca y devuelve todos los servicios en la base de datos
-      return await Servicio.findAll();
+      let servicios = await Servicio.findAll();
+      res.status(200).json({
+        Mensaje: "Servicios traídos con éxito",
+        servicios: servicios,
+      });
     } catch (error) {
-      throw error; // Lanzar el error para que se maneje en el middleware de manejo de errores
+      next(error); // Lanzar el error para que se maneje en el middleware de manejo de errores
     }
   }
 }
