@@ -2,7 +2,14 @@
 const express = require("express");
 const publicacionController = require("../controllers/publicacionController.js");
 const publicacionRouter = express.Router();
+const Jwt = require("../models/Jwt.js");
 
+/*
+publicacionRouter.post(
+  "/publicacion",
+  Jwt.verificarToken,
+  publicacionController.altaPublicacion
+);*/
 // Ruta para crear una nueva publicación con manejo de errores
 publicacionRouter.post("/publicacion", async (req, res, next) => {
   try {

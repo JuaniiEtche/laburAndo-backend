@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": null,
+    "password": "1925",
     "database": "laburAndo",
     "host": "localhost",
     "dialect": "mysql"
