@@ -1,36 +1,31 @@
+// Importa los modelos de Localidad y Provincia
 const Localidad = require("../models/Localidad");
 const Provincia = require("../models/Provincia");
 
 class localidadController {
-  async traerLocalidadesPorProvincia(req, res) {
+  // Función asincrónica para traer localidades por provincia
+  async traerLocalidadesPorProvincia(req) {
     try {
       const { nombreProvincia } = req.body;
 
+      // Busca la provincia por nombre en la base de datos
       const provincia = await Provincia.findOne({
         where: { nombre: nombreProvincia },
       });
 
+      // Si la provincia no se encuentra, regresa sin hacer nada
       if (!provincia) {
-        return res.status(404).json({
-          Mensaje: "Provincia no encontrada",
-          Exito: false,
-        });
+        return;
       }
 
+      // Busca las localidades relacionadas a la provincia y las devuelve
       const localidades = await Localidad.findAll({
         where: { idProvincia: provincia.id },
       });
 
-      res.status(200).json({
-        Mensaje: "Localidades de la provincia traidas con éxito",
-        Exito: true,
-        localidades: localidades,
-      });
+      return localidades; // Devuelve las localidades en lugar de enviar la respuesta directamente
     } catch (error) {
-      res.status(500).json({
-        Mensaje: "No se pudieron traer las localidades",
-        Exito: false,
-      });
+      throw error; // Lanzar el error para que se maneje en el middleware de manejo de errores
     }
   }
 }
