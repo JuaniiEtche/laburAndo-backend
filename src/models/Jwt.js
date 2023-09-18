@@ -26,6 +26,7 @@ class Jwt {
         let e = new Error();
         e.statusCode = 401;
         next(e);
+        return;
       }
       const token = authHeader.replace("Bearer ", "");
       await jwt.verify(token, process.env.SECRET_KEY_JWT, (err) => {
@@ -33,6 +34,7 @@ class Jwt {
           let e = new Error();
           e.statusCode = 403;
           next(e);
+          return;
         }
         next();
       });

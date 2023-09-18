@@ -1,8 +1,63 @@
 // Importa el modelo de Persona y la librería bcrypt para el hashing de contraseñas
 const Persona = require("../models/Persona");
 const bcrypt = require("bcrypt");
-
+const Localidad = require("../models/Localidad");
+const Provincia = require("../models/Provincia");
+const s = require("../middlewares/notFoundHandler");
 class PersonaController {
+  async obtenerPersona(req, res, next) {
+    try {
+      const id = req.params.id;
+      const usuario = await Persona.findByPk(id, {
+        include: [
+          {
+            model: Localidad,
+            as: "localidad",
+            attributes: ["nombre"],
+            include: [
+              {
+                model: Provincia,
+                as: "provincia",
+                attributes: ["nombre"],
+              },
+            ],
+          },
+        ],
+        attributes: { exclude: ["idLocalidad", "clave"] },
+      });
+      if (!usuario) {
+        return res.status(404).json({ message: "Persona no encontrada" });
+      }
+      res.json(usuario);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async obtenerPersonas(req, res, next) {
+    try {
+      let usuarios = await Persona.findAll({
+        include: [
+          {
+            model: Localidad,
+            as: "localidad",
+            attributes: ["nombre"],
+            include: [
+              {
+                model: Provincia,
+                as: "provincia",
+                attributes: ["nombre"],
+              },
+            ],
+          },
+        ],
+        attributes: { exclude: ["idLocalidad", "clave"] },
+      });
+      res.json(usuarios);
+    } catch (error) {
+      next(error);
+    }
+  }
   // Función asincrónica para dar de alta a una persona
   async altaPersona(req, res, next) {
     try {
