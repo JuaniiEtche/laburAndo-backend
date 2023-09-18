@@ -23,6 +23,7 @@ class PersonaController {
             ],
           },
         ],
+        attributes: { exclude: ["idLocalidad", "clave"] },
       });
       if (!usuario) {
         return res.status(404).json({ message: "Persona no encontrada" });
@@ -50,7 +51,7 @@ class PersonaController {
             ],
           },
         ],
-        attributes: { exclude: ["idLocalidad", "usuario", "clave"] },
+        attributes: { exclude: ["idLocalidad", "clave"] },
       });
       res.json(usuarios);
     } catch (error) {
