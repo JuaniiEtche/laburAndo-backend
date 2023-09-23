@@ -5,11 +5,11 @@ name: Node.js CI
 on:
   push:
     branches:
-      - '*' # Se ejecuta cuando se hace push en cualquier rama
+      - "*" # Se ejecuta cuando se hace push en cualquier rama
   pull_request:
     branches:
       - main
-      - dev 
+      - dev
 
 # Definición del trabajo
 jobs:
@@ -19,18 +19,18 @@ jobs:
     # Estrategia de matriz para probar diferentes versiones de Node.js
     strategy:
       matrix:
-        node-version: [14.x, 16.x, 18.x]
+        node-version: 18.x
         # Aquí se pueden agregar más versiones de Node.js según sea necesario
 
     # Pasos a seguir en el trabajo
     steps:
-    - uses: actions/checkout@v3 # Paso para clonar el repositorio
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm' # Configuración para cachear las dependencias de npm
+      - uses: actions/checkout@v3 # Paso para clonar el repositorio
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm" # Configuración para cachear las dependencias de npm
 
-    - run: npm ci # Instalación limpia de dependencias de Node.js
-    - run: npm run build --if-present # Construcción del código fuente si existe un script de construcción
-    - run: npm test # Ejecución de las pruebas del proyecto
+      - run: npm ci # Instalación limpia de dependencias de Node.js
+      - run: npm run build --if-present # Construcción del código fuente si existe un script de construcción
+      - run: npm test # Ejecución de las pruebas del proyecto
