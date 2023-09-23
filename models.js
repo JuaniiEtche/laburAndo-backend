@@ -18,10 +18,6 @@ module.exports = (sequelize) => {
   // Sincroniza los modelos con la base de datos (Se utiliza en esta etapa para mapear los modelos en tablas)
   sequelize
     .sync({ force: false })
-    .then(() => {
-      console.log("Modelos sincronizados con la base de datos");
-    })
-    .catch((err) => {
-      console.error("Error al sincronizar modelos:", err);
-    });
+    .then(() => {})
+    .catch((err) => {});
 };
