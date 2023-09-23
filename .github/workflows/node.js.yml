@@ -1,22 +1,28 @@
-name: CI
+name: Node.js CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main  # Cambia "main" al nombre de tu rama principal si es diferente
+  pull_request:
+    branches:
+      - main  # Cambia "main" al nombre de tu rama principal si es diferente
 
 jobs:
-    test:
-        runs-on: ubuntu-latest
+  build:
+    runs-on: ubuntu-latest
 
-        strategy:
-            matrix:
-                node-version: [18.x]
+    steps:
+    - name: Checkout código fuente
+      uses: actions/checkout@v2
 
-        steps:
-            
-uses: actions/checkout@v3
-name: Build and Test
-          uses: actions/setup-node@v3
-          with:
-              node-version: '18.x'
-run: npm ci
-run: npm run build --if-present
-run: npm run test
+    - name: Configurar Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14  # Cambia la versión de Node.js según tus necesidades
+
+    - name: Instalar dependencias
+      run: npm install
+
+    - name: Ejecutar tests
+      run: npm run test
