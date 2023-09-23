@@ -1,36 +1,22 @@
-# Nombre del flujo de trabajo
-name: Node.js CI
+name: CI
 
-# Eventos que desencadenan la ejecución del flujo de trabajo
-on:
-  push:
-    branches:
-      - "*" # Se ejecuta cuando se hace push en cualquier rama
-  pull_request:
-    branches:
-      - main
-      - dev
+on: [push, pull_request]
 
-# Definición del trabajo
 jobs:
-  build:
-    runs-on: ubuntu-latest # El trabajo se ejecuta en una máquina con la última versión de Ubuntu
+    test:
+        runs-on: ubuntu-latest
 
-    # Estrategia de matriz para probar diferentes versiones de Node.js
-    strategy:
-      matrix:
-        node-version: 18.x
-        # Aquí se pueden agregar más versiones de Node.js según sea necesario
+        strategy:
+            matrix:
+                node-version: [18.x]
 
-    # Pasos a seguir en el trabajo
-    steps:
-      - uses: actions/checkout@v3 # Paso para clonar el repositorio
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: "npm" # Configuración para cachear las dependencias de npm
-
-      - run: npm install # Instalación limpia de dependencias de Node.js
-      - run: npm run build --if-present # Construcción del código fuente si existe un script de construcción
-      - run: npm test # Ejecución de las pruebas del proyecto
+        steps:
+            
+uses: actions/checkout@v3
+name: Build and Test
+          uses: actions/setup-node@v3
+          with:
+              node-version: '18.x'
+run: npm ci
+run: npm run build --if-present
+run: npm run test
