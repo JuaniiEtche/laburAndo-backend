@@ -24,7 +24,11 @@ app.use(errorHandler);
 // Middleware para manejar rutas no encontradas
 app.use(notFoundHandler);
 
-// Iniciar el servidor
-app.listen(port, () => {
-  console.log(`La aplicación está escuchando en el puerto ${port}`);
-});
+if (require.main === module) {
+  // Si este archivo se ejecuta directamente, inicia el servidor
+  app.listen(port, () => {
+    console.log(`La aplicación está escuchando en el puerto ${port}`);
+  });
+}
+
+module.exports = app;
