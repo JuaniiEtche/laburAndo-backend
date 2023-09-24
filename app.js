@@ -1,46 +1,34 @@
 const express = require("express");
-const morgan = require("morgan");
-const Sequelize = require("sequelize");
+const { sequelize } = require("./src/db/db");
+const configApp = require("./src/config/configApp");
+const errorHandler = require("./src/middlewares/errorHandler");
+const notFoundHandler = require("./src/middlewares/notFoundHandler");
+const routers = require("./routers.js");
+const configureModels = require("./models");
+
 const app = express();
 const port = 3000;
-app.use(morgan("dev"));
 
-// Carga la configuración desde config.json
-const env = process.env.NODE_ENV || "development";
-const config = require("./config/config.json")[env];
+// Configuración de la aplicación
+configApp(app);
 
-// Configura la conexión a la base de datos MySQL
-const sequelize = new Sequelize(
-  config.database,
-  config.username,
-  config.password,
-  {
-    host: config.host,
-    dialect: config.dialect,
-  }
-);
+// Configura los modelos y asociaciones
+configureModels(sequelize);
 
-// Importa los modelos Sequelize
-const PersonaModel = require("./models/Persona");
+// Cargar rutas definidas en el archivo 'routes.js'
+app.use("/api", routers);
 
-// Define los modelos en Sequelize
-const Persona = PersonaModel(sequelize, Sequelize.DataTypes);
+// Middleware de manejo de errores global
+app.use(errorHandler);
 
-// Sincroniza los modelos con la base de datos
-sequelize
-  .sync({ force: false })
-  .then(() => {
-    console.log("Modelos sincronizados con la base de datos");
-  })
-  .catch((err) => {
-    console.error("Error al sincronizar modelos:", err);
+// Middleware para manejar rutas no encontradas
+app.use(notFoundHandler);
+
+if (require.main === module) {
+  // Si este archivo se ejecuta directamente, inicia el servidor
+  app.listen(port, () => {
+    console.log(`La aplicación está escuchando en el puerto ${port}`);
   });
+}
 
-app.get("/", (req, res) => {});
-
-const personaRouter = require("./src/routes/personaRoute");
-app.use("/api", personaRouter);
-
-app.listen(port, () => {
-  console.log(`La aplicación está escuchando en el puerto ${port}`);
-});
+module.exports = app;
