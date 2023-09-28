@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "root",
-    "password": "1925",
-    "database": "laburAndo",
-    "host": "localhost",
+    "username": "admin",
+    "password": "gIdAs-FRLP_20230922",
+    "database": "laburando",
+    "host": "200.58.106.151",
     "dialect": "mysql"
   },
   "test": {

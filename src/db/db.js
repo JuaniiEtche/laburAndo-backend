@@ -12,7 +12,7 @@ if (env === "test") {
   });
 } else {
   // En otros entornos, usar MySQL con la configuración del archivo config.json
-  sequelize = new Sequelize("laburAndo", config.username, config.password, {
+  sequelize = new Sequelize(config.database, config.username, config.password, {
     host: config.host,
     dialect: config.dialect,
   });
