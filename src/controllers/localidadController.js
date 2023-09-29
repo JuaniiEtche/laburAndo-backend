@@ -6,8 +6,7 @@ class localidadController {
   // Función asincrónica para traer localidades por provincia
   async traerLocalidadesPorProvincia(req, res, next) {
     try {
-      const { nombreProvincia } = req.body;
-
+      const nombreProvincia = req.params.nombre;
       // Busca la provincia por nombre en la base de datos
       const provincia = await Provincia.findOne({
         where: { nombre: nombreProvincia },

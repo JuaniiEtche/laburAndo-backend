@@ -5,7 +5,7 @@ const Jwt = require("../models/Jwt");
 const localidadRouter = express.Router();
 
 localidadRouter.get(
-  "/localidadesxprovincia",
+  "/localidadesxprovincia/:nombre",
   Jwt.verificarToken,
   async (req, res, next) => {
     // Llama a la función del controlador para obtener localidades por provincia
