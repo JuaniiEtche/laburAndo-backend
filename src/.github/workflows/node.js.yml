@@ -1,0 +1,28 @@
+# Nombre del flujo de trabajo
+name: Node.js CI
+
+# Eventos que desencadenan la ejecución del flujo de trabajo
+on:
+  push:
+    branches:
+      - "*" # Se ejecuta cuando se hace push en cualquier rama
+  pull_request:
+    branches:
+      - main
+      - dev
+
+# Definición del trabajo
+jobs:
+  build:
+    runs-on: ubuntu-latest # El trabajo se ejecuta en una máquina con la última versión de Ubuntu
+
+    # Pasos a seguir en el trabajo
+    steps:
+      - uses: actions/checkout@v2 # Paso para clonar el repositorio
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 16
+
+      - run: npm ci # Instalación limpia de dependencias de Node.js
+      - run: npm test # Ejecución de las pruebas del proyecto
+      - run: npm run build --if-present # Construcción del código fuente si existe un script de construcción
