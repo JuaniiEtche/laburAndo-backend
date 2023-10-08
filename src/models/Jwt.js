@@ -23,7 +23,7 @@ class Jwt {
     try {
       const authHeader = req.headers["authorization"];
       if (!authHeader) {
-        let e = new Error();
+        let e = new Error("Debe identificarse mediante un token valido");
         e.statusCode = 401;
         next(e);
         return;
@@ -31,7 +31,7 @@ class Jwt {
       const token = authHeader.replace("Bearer ", "");
       await jwt.verify(token, process.env.SECRET_KEY_JWT, (err) => {
         if (err) {
-          let e = new Error();
+          let e = new Error("Token no valido");
           e.statusCode = 403;
           next(e);
           return;

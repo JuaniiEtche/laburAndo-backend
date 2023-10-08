@@ -92,7 +92,7 @@ class PersonaController {
 
       if (existingEmail) {
         const error = new Error(
-          "El email ingresado ya está registrado en otra cuenta"
+          "El email ingresado ya esta registrado en otra cuenta"
         );
         error.statusCode = 409;
         throw error;
@@ -107,7 +107,7 @@ class PersonaController {
 
       if (existingUsuario) {
         const error = new Error(
-          "El username ingresado ya está registrado en otra cuenta"
+          "El username ingresado ya esta registrado en otra cuenta"
         );
         error.statusCode = 409;
         throw error;
@@ -122,7 +122,7 @@ class PersonaController {
 
       if (existingTelefono) {
         const error = new Error(
-          "El numero de telefono ingresado ya está registrado en otra cuenta"
+          "El numero de telefono ingresado ya esta registrado en otra cuenta"
         );
         error.statusCode = 409;
         throw error;

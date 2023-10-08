@@ -24,7 +24,9 @@ Persona.beforeCreate(async (persona) => {
   const saltRounds = 10;
   const hashedPassword = await bcrypt.hash(persona.clave, saltRounds);
   persona.clave = hashedPassword;
-  const imagenBinaria = Buffer.from(persona.imagenAdjunta, "base64");
-  persona.imagenAdjunta = imagenBinaria;
+  if (persona.imagenAdjunta != null) {
+    const imagenBinaria = Buffer.from(persona.imagenAdjunta, "base64");
+    persona.imagenAdjunta = imagenBinaria;
+  }
 });
 module.exports = Persona;

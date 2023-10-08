@@ -47,12 +47,14 @@ describe("Pruebas del endpoint /api/usuario", () => {
       telefono: "1234567890",
       usuario: "juanperezD",
       clave: "contraseña123",
+      imagenAdjunta: null,
+      descripcion: null,
       idLocalidad: localidad.id,
     };
 
     let response = await request(app).post("/api/usuario").send(nuevaPersona);
     expect(response.status).toBe(201);
-    expect(response.body.message).toBe("Persona creada con éxito");
+    expect(response.body.message).toBe("Persona creada con exito");
 
     // Verifica que la contraseña se haya hasheado correctamente en la base de datos
     let personaCreada = await Persona.findOne({
@@ -75,6 +77,8 @@ describe("Pruebas del endpoint /api/usuario", () => {
       telefono: "123456789",
       usuario: "juanperez",
       clave: "contraseña123",
+      imagenAdjunta: null,
+      descripcion: null,
       idLocalidad: localidad.id,
     };
 
@@ -87,6 +91,8 @@ describe("Pruebas del endpoint /api/usuario", () => {
       telefono: "1234567899",
       usuario: "juanperezz",
       clave: "contraseña123",
+      imagenAdjunta: null,
+      descripcion: null,
       idLocalidad: localidad.id,
     };
 
@@ -94,9 +100,9 @@ describe("Pruebas del endpoint /api/usuario", () => {
       .post("/api/usuario")
       .send(personaExistente);
 
-    expect(response.status).toBe(400);
-    expect(response.body.message).toBe(
-      "Ya existe una persona con este correo electrónico."
+    expect(response.status).toBe(409);
+    expect(response.body.error).toBe(
+      "Conflicto: El email ingresado ya esta registrado en otra cuenta"
     );
     await Persona.destroy({ where: { id: personaCreada.id } });
   });
@@ -109,6 +115,8 @@ describe("Pruebas del endpoint /api/usuario", () => {
       telefono: "123456789",
       usuario: "juanperez",
       clave: "contraseña123",
+      imagenAdjunta: null,
+      descripcion: null,
       idLocalidad: localidad.id,
     };
 
@@ -121,6 +129,8 @@ describe("Pruebas del endpoint /api/usuario", () => {
       telefono: "1234567899",
       usuario: "juanperez",
       clave: "contraseña123",
+      imagenAdjunta: null,
+      descripcion: null,
       idLocalidad: localidad.id,
     };
 
@@ -128,9 +138,9 @@ describe("Pruebas del endpoint /api/usuario", () => {
       .post("/api/usuario")
       .send(personaExistente);
 
-    expect(response.status).toBe(400);
-    expect(response.body.message).toBe(
-      "Ya existe una persona con este usuario."
+    expect(response.status).toBe(409);
+    expect(response.body.error).toBe(
+      "Conflicto: El username ingresado ya esta registrado en otra cuenta"
     );
     await Persona.destroy({ where: { id: personaCreada.id } });
   });
@@ -143,6 +153,8 @@ describe("Pruebas del endpoint /api/usuario", () => {
       telefono: "123456789",
       usuario: "juanperez",
       clave: "contraseña123",
+      imagenAdjunta: null,
+      descripcion: null,
       idLocalidad: localidad.id,
     };
 
@@ -155,6 +167,8 @@ describe("Pruebas del endpoint /api/usuario", () => {
       telefono: "123456789",
       usuario: "juanperezz",
       clave: "contraseña123",
+      imagenAdjunta: null,
+      descripcion: null,
       idLocalidad: localidad.id,
     };
 
@@ -162,9 +176,9 @@ describe("Pruebas del endpoint /api/usuario", () => {
       .post("/api/usuario")
       .send(personaExistente);
 
-    expect(response.status).toBe(400);
-    expect(response.body.message).toBe(
-      "Ya existe una persona con este número de teléfono."
+    expect(response.status).toBe(409);
+    expect(response.body.error).toBe(
+      "Conflicto: El numero de telefono ingresado ya esta registrado en otra cuenta"
     );
     await Persona.destroy({ where: { id: personaCreada.id } });
   });
