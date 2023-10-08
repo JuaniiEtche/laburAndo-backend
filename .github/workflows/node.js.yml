@@ -26,4 +26,3 @@ jobs:
       - run: npm ci # Instalación limpia de dependencias de Node.js
       - run: npm test # Ejecución de las pruebas del proyecto
       - run: npm run build --if-present # Construcción del código fuente si existe un script de construcción
-
