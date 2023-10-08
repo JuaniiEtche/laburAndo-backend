@@ -47,9 +47,8 @@ describe("Pruebas del endpoint /api/localidadesxprovincia", () => {
 
   it("Debería obtener todas las localidades de una provincia con el token válido", async () => {
     let response = await request(app)
-      .get("/api/localidadesxprovincia")
-      .set("Authorization", `Bearer ${token}`)
-      .send({ nombreProvincia: "bs asL" });
+      .get("/api/localidadesxprovincia/bs%20asL")
+      .set("Authorization", `Bearer ${token}`);
 
     expect(response.status).toBe(200);
     expect(response.body.Mensaje).toBe(
@@ -62,9 +61,8 @@ describe("Pruebas del endpoint /api/localidadesxprovincia", () => {
     let tokenInvalido = "token-invalido"; // Token inválido
 
     let response = await request(app)
-      .get("/api/localidadesxprovincia")
-      .set("Authorization", `Bearer ${tokenInvalido}`)
-      .send({ nombreProvincia: "bs asL" });
+      .get("/api/localidadesxprovincia/bs%20asL")
+      .set("Authorization", `Bearer ${tokenInvalido}`);
 
     expect(response.status).toBe(403);
   });
