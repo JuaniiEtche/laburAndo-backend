@@ -5,7 +5,7 @@ const Jwt = require("../models/Jwt.js");
 const servicioRouter = express.Router();
 
 // Ruta para obtener todos los servicios con manejo de errores
-servicioRouter.get("/servicio", Jwt.verificarToken, async (req, res, next) => {
+servicioRouter.get("/servicio", async (req, res, next) => {
   await servicioController.traerServicios(req, res, next);
 });
 
