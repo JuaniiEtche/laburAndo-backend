@@ -13,9 +13,12 @@ module.exports = () => {
   // Define las asociaciones entre modelos
   // Asociaciones de Persona
 
-  Persona.hasMany(ServicioXPersona, {
-    foreignKey: "idPersona",
+  // Definición de relaciones
+  Persona.belongsToMany(Servicio, {
+    through: ServicioXPersona,
     as: "servicios",
+    foreignKey: "idPersona",
+    otherKey: "idServicio",
   });
 
   Persona.hasMany(Publicacion, {
@@ -38,9 +41,11 @@ module.exports = () => {
     as: "reseñasRecibidas",
   });
 
-  Persona.hasMany(SolicitudTrabajo, {
+  Persona.belongsToMany(Publicacion, {
+    through: SolicitudTrabajo,
     foreignKey: "idSolicitador",
     as: "solicitudes",
+    otherKey: "idPublicacion",
   });
 
   // Asociaciones de Localidad
@@ -76,15 +81,19 @@ module.exports = () => {
     foreignKey: "idPersona",
     as: "persona",
   });
-  Publicacion.hasMany(SolicitudTrabajo, {
+  Publicacion.belongsToMany(Persona, {
+    through: SolicitudTrabajo,
     foreignKey: "idPublicacion",
     as: "solicitudes",
+    otherKey: "idSolicitador",
   });
 
   // Asociaciones de Servicio
-  Servicio.hasMany(ServicioXPersona, {
-    foreignKey: "idServicio",
+  Servicio.belongsToMany(Persona, {
+    through: ServicioXPersona,
     as: "personas",
+    foreignKey: "idServicio",
+    otherKey: "idPersona",
   });
 
   Servicio.hasMany(Publicacion, {
@@ -101,28 +110,5 @@ module.exports = () => {
   Resena.belongsTo(Persona, {
     foreignKey: "idCalificado",
     as: "calificado",
-  });
-
-  // Asociaciones de Solicitud trabajo
-  SolicitudTrabajo.belongsTo(Persona, {
-    foreignKey: "idSolicitador",
-    as: "solicitador",
-  });
-
-  SolicitudTrabajo.belongsTo(Publicacion, {
-    foreignKey: "idPublicacion",
-    as: "publicacion",
-  });
-
-  //Asociaciones de servicios x personas
-
-  ServicioXPersona.belongsTo(Persona, {
-    foreignKey: "idPersona",
-    as: "persona",
-  });
-
-  ServicioXPersona.belongsTo(Servicio, {
-    foreignKey: "idServicio",
-    as: "servicio",
   });
 };
