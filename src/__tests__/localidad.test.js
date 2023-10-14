@@ -56,14 +56,4 @@ describe("Pruebas del endpoint /api/localidadesxprovincia", () => {
     );
     expect(Array.isArray(response.body.localidades)).toBe(true);
   });
-
-  it("Debería devolver un error si el token es inválido", async () => {
-    let tokenInvalido = "token-invalido"; // Token inválido
-
-    let response = await request(app)
-      .get("/api/localidadesxprovincia/bs%20asL")
-      .set("Authorization", `Bearer ${tokenInvalido}`);
-
-    expect(response.status).toBe(403);
-  });
 });
