@@ -6,6 +6,7 @@ let Provincia = require("../models/Provincia");
 let Localidad = require("../models/Localidad");
 let Persona = require("../models/Persona");
 let Servicio = require("../models/Servicio");
+const Publicacion = require("../models/Publicacion");
 
 describe("Pruebas del endpoint /api/publicacion", () => {
   let token;
@@ -66,6 +67,27 @@ describe("Pruebas del endpoint /api/publicacion", () => {
     expect(response.status).toBe(200);
     expect(response.body.Mensaje).toBe("Publicaciones traídas con éxito");
     expect(Array.isArray(response.body.publicaciones)).toBe(true);
+  });
+
+  it("Debería obtener la publicacion mediante un id", async () => {
+    let publicacion = {
+      titulo: "titulo publicacion",
+      idLocalidad: localidadPu.id,
+      idPersona: personaPu.id,
+      idServicio: servicioPu.id,
+      descripcion: "descripcion",
+      duracionDias: 20,
+      fechaPublicacion: "2023-10-11T12:00:00.000Z",
+    };
+
+    const p = await Publicacion.create(publicacion);
+
+    let response = await request(app)
+      .get(`/api/publicacion/${p.id}`)
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(response.status).toBe(200);
+    expect(response.body.Mensaje).toBe("Publicacion traida con éxito");
   });
 
   it("Debería poder dar de alta una publicación", async () => {
