@@ -46,9 +46,9 @@ describe("Pruebas del endpoint /api/localidadesxprovincia", () => {
   });
 
   it("Debería obtener todas las localidades de una provincia con el token válido", async () => {
-    let response = await request(app)
-      .get("/api/localidadesxprovincia/bs%20asL")
-      .set("Authorization", `Bearer ${token}`);
+    let response = await request(app).get(
+      "/api/localidadesxprovincia/bs%20asL"
+    );
 
     expect(response.status).toBe(200);
     expect(response.body.Mensaje).toBe(

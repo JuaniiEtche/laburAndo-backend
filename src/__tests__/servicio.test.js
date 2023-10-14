@@ -29,9 +29,7 @@ describe("Pruebas del endpoint /api/servicio", () => {
   });
 
   it("Debería obtener todos los servicios con el token válido", async () => {
-    let response = await request(app)
-      .get("/api/servicio")
-      .set("Authorization", `Bearer ${token}`);
+    let response = await request(app).get("/api/servicio");
 
     expect(response.status).toBe(200);
     expect(response.body.Mensaje).toBe("Servicios traídos con éxito");

@@ -79,8 +79,6 @@ describe("Pruebas del endpoint /api/publicacion", () => {
       fechaPublicacion: "2023-10-11T12:00:00.000Z",
     };
 
-    console.log(publicacion);
-
     let response = await request(app)
       .post("/api/publicacion")
       .set("Authorization", `Bearer ${token}`)

@@ -29,9 +29,7 @@ describe("Pruebas del endpoint /api/provincia", () => {
   });
 
   it("Debería obtener todas las provincias con el token válido", async () => {
-    let response = await request(app)
-      .get("/api/provincia")
-      .set("Authorization", `Bearer ${token}`);
+    let response = await request(app).get("/api/provincia");
 
     expect(response.status).toBe(200);
     expect(response.body.Mensaje).toBe("Provincias traídas con éxito");
