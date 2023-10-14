@@ -4,6 +4,8 @@ const bcrypt = require("bcrypt");
 const Localidad = require("../models/Localidad");
 const Provincia = require("../models/Provincia");
 const s = require("../middlewares/notFoundHandler");
+const Servicio = require("../models/Servicio");
+const ServicioXPersona = require("../models/ServicioXPersona");
 class PersonaController {
   async obtenerPersona(req, res, next) {
     try {
@@ -22,9 +24,20 @@ class PersonaController {
               },
             ],
           },
+          {
+            model: Servicio,
+            as: "servicios",
+            through: {
+              attributes: [],
+            },
+            attributes: ["nombre", "descripcion"],
+          },
         ],
         attributes: { exclude: ["idLocalidad", "clave"] },
       });
+
+      // Ahora, serviciosDeLaPersona contendrá un arreglo de los servicios de la persona.
+
       if (!usuario) {
         return res.status(404).json({ message: "Persona no encontrada" });
       }
@@ -101,10 +114,6 @@ class PersonaController {
           message: "Ya existe una persona con este número de teléfono.",
         });
       }
-
-      // Hashea la contraseña proporcionada en personaData
-      var claveHasheada = await bcrypt.hash(personaData.clave, 10);
-      personaData.clave = claveHasheada;
 
       // Crea un nuevo registro de persona en la base de datos
       await Persona.create(personaData);

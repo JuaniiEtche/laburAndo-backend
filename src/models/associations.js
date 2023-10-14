@@ -5,10 +5,22 @@ const Persona = require("./Persona");
 const Provincia = require("./Provincia");
 const Publicacion = require("./Publicacion");
 const Servicio = require("./Servicio");
+const Resena = require("./Resena");
+const SolicitudTrabajo = require("./SolicitudTrabajo");
+const ServicioXPersona = require("./ServicioXPersona");
 
 module.exports = () => {
   // Define las asociaciones entre modelos
   // Asociaciones de Persona
+
+  // Definición de relaciones
+  Persona.belongsToMany(Servicio, {
+    through: ServicioXPersona,
+    as: "servicios",
+    foreignKey: "idPersona",
+    otherKey: "idServicio",
+  });
+
   Persona.hasMany(Publicacion, {
     foreignKey: "idPersona",
     as: "publicaciones",
@@ -17,6 +29,23 @@ module.exports = () => {
   Persona.belongsTo(Localidad, {
     foreignKey: "idLocalidad",
     as: "localidad",
+  });
+
+  Persona.hasMany(Resena, {
+    foreignKey: "idCalificador",
+    as: "reseñasDadas",
+  });
+
+  Persona.hasMany(Resena, {
+    foreignKey: "idCalificado",
+    as: "reseñasRecibidas",
+  });
+
+  Persona.belongsToMany(Publicacion, {
+    through: SolicitudTrabajo,
+    foreignKey: "idSolicitador",
+    as: "solicitudes",
+    otherKey: "idPublicacion",
   });
 
   // Asociaciones de Localidad
@@ -52,10 +81,34 @@ module.exports = () => {
     foreignKey: "idPersona",
     as: "persona",
   });
+  Publicacion.belongsToMany(Persona, {
+    through: SolicitudTrabajo,
+    foreignKey: "idPublicacion",
+    as: "solicitudes",
+    otherKey: "idSolicitador",
+  });
 
   // Asociaciones de Servicio
+  Servicio.belongsToMany(Persona, {
+    through: ServicioXPersona,
+    as: "personas",
+    foreignKey: "idServicio",
+    otherKey: "idPersona",
+  });
+
   Servicio.hasMany(Publicacion, {
     foreignKey: "idServicio",
     as: "publicaciones",
+  });
+
+  // Asociaciones de Resena
+  Resena.belongsTo(Persona, {
+    foreignKey: "idCalificador",
+    as: "calificador",
+  });
+
+  Resena.belongsTo(Persona, {
+    foreignKey: "idCalificado",
+    as: "calificado",
   });
 };
