@@ -7,10 +7,17 @@ const Publicacion = require("./Publicacion");
 const Servicio = require("./Servicio");
 const Resena = require("./Resena");
 const SolicitudTrabajo = require("./SolicitudTrabajo");
+const ServicioXPersona = require("./ServicioXPersona");
 
 module.exports = () => {
   // Define las asociaciones entre modelos
   // Asociaciones de Persona
+
+  Persona.hasMany(ServicioXPersona, {
+    foreignKey: "idPersona",
+    as: "servicios",
+  });
+
   Persona.hasMany(Publicacion, {
     foreignKey: "idPersona",
     as: "publicaciones",
@@ -75,6 +82,11 @@ module.exports = () => {
   });
 
   // Asociaciones de Servicio
+  Servicio.hasMany(ServicioXPersona, {
+    foreignKey: "idServicio",
+    as: "personas",
+  });
+
   Servicio.hasMany(Publicacion, {
     foreignKey: "idServicio",
     as: "publicaciones",
@@ -100,5 +112,17 @@ module.exports = () => {
   SolicitudTrabajo.belongsTo(Publicacion, {
     foreignKey: "idPublicacion",
     as: "publicacion",
+  });
+
+  //Asociaciones de servicios x personas
+
+  ServicioXPersona.belongsTo(Persona, {
+    foreignKey: "idPersona",
+    as: "persona",
+  });
+
+  ServicioXPersona.belongsTo(Servicio, {
+    foreignKey: "idServicio",
+    as: "servicio",
   });
 };

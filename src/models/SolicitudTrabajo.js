@@ -7,7 +7,7 @@ const SolicitudTrabajo = sequelize.define(
     idPublicacion: { type: DataTypes.INTEGER, allowNull: false, unique: false },
   },
   {
-    tableName: "SolicitudTrabajo",
+    tableName: "solicitudtrabajo",
     timestamps: false,
   }
 );
