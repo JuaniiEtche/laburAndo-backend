@@ -1,8 +1,6 @@
 # Carpeta node_modules generada por npm/yarn
 node_modules/
 
-#Archivo temporal de testing
-*.sqlite
 
 # Archivos de registro y archivos de respaldo
 *.log
