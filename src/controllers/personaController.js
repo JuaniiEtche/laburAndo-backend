@@ -71,10 +71,29 @@ class PersonaController {
       next(error);
     }
   }
-  // Función asincrónica para dar de alta a una persona
   async altaPersona(req, res, next) {
     try {
-      let personaData = req.body;
+      const personaData = req.body;
+      const clavesNecesarias = [
+        "nombre",
+        "apellido",
+        "email",
+        "telefono",
+        "usuario",
+        "clave",
+        "idLocalidad",
+        "imagenAdjunta",
+        "descripcion",
+      ];
+      clavesNecesarias.forEach((element) => {
+        if (!personaData.hasOwnProperty(element)) {
+          let e = new Error(
+            `Debe proporcionarse el atributo '${element}' en la solicitud`
+          );
+          e.statusCode = 400;
+          next(e);
+        }
+      });
 
       // Verifica si ya existe una persona con el mismo correo electrónico
       const existingEmail = await Persona.findOne({
@@ -84,9 +103,11 @@ class PersonaController {
       });
 
       if (existingEmail) {
-        return res.status(400).json({
-          message: "Ya existe una persona con este correo electrónico.",
-        });
+        const error = new Error(
+          "El email ingresado ya esta registrado en otra cuenta"
+        );
+        error.statusCode = 409;
+        throw error;
       }
 
       // Verifica si ya existe una persona con el mismo usuario
@@ -97,9 +118,11 @@ class PersonaController {
       });
 
       if (existingUsuario) {
-        return res.status(400).json({
-          message: "Ya existe una persona con este usuario.",
-        });
+        const error = new Error(
+          "El username ingresado ya esta registrado en otra cuenta"
+        );
+        error.statusCode = 409;
+        throw error;
       }
 
       // Verifica si ya existe una persona con el mismo número de teléfono
@@ -110,16 +133,17 @@ class PersonaController {
       });
 
       if (existingTelefono) {
-        return res.status(400).json({
-          message: "Ya existe una persona con este número de teléfono.",
-        });
+        const error = new Error(
+          "El numero de telefono ingresado ya esta registrado en otra cuenta"
+        );
+        error.statusCode = 409;
+        throw error;
       }
-
       // Crea un nuevo registro de persona en la base de datos
       await Persona.create(personaData);
 
       res.status(201).json({
-        message: "Persona creada con éxito",
+        message: "Persona creada con exito",
       });
     } catch (error) {
       next(error); // Lanzar el error para que se maneje en el middleware de manejo de errores
