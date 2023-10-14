@@ -7,6 +7,7 @@ const Resena = sequelize.define(
     descripcion: { type: DataTypes.STRING, allowNull: true, unique: false },
     idCalificador: { type: DataTypes.INTEGER, allowNull: false, unique: false },
     idCalificado: { type: DataTypes.INTEGER, allowNull: false, unique: false },
+    fecha: { type: DataTypes.DATE, allowNull: false, unique: false },
   },
   {
     tableName: "resena",
