@@ -13,6 +13,15 @@ publicacionRouter.post(
   }
 );
 
+// Ruta para obtener una publicacion
+publicacionRouter.get(
+  "/publicacion/:id",
+  Jwt.verificarToken,
+  async (req, res, next) => {
+    await publicacionController.obtenerPublicacion(req, res, next);
+  }
+);
+
 // Ruta para obtener todas las publicaciones con manejo de errores
 publicacionRouter.get(
   "/publicacion",
