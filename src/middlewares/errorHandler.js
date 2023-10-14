@@ -4,6 +4,7 @@ module.exports = (err, req, res, next) => {
     400: { message: "Solicitud incorrecta" },
     401: { message: "No autorizado" },
     403: { message: "Acceso prohibido" },
+    404: { message: "No encontrado" },
     409: { message: "Conflicto" },
     500: { message: "Error interno del servidor" },
   };
