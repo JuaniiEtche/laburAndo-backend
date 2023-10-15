@@ -5,7 +5,7 @@ const Jwt = require("../models/Jwt.js");
 const ServicioXPersonaRoute = express.Router();
 
 // Ruta para obtener todos los servicios con manejo de errores
-ServicioXPersonaRoute.get("/servicioxpersona", async (req, res, next) => {
+ServicioXPersonaRoute.post("/servicioxpersona", async (req, res, next) => {
   await ServicioXPersonaController.altaServicioXPersona(req, res, next);
 });
 

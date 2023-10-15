@@ -13,9 +13,9 @@ class servicioXPersonaController {
         return res.status(404).json({ message: "Persona no encontrada" });
       }
 
-      const Servicio = await Servicio.findByPk(servicioxPersonaData.idServicio);
+      const servicio = await Servicio.findByPk(servicioxPersonaData.idServicio);
 
-      if (Servicio == null) {
+      if (servicio == null) {
         return res.status(404).json({ message: "Servicio no encontrada" });
       }
 
