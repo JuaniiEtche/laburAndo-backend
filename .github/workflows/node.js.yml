@@ -1,14 +1,17 @@
+# Nombre del flujo de trabajo
 name: Node.js CI
 
-#Eventos que desencadenan la ejecución del flujo de trabajo
+# Eventos que desencadenan la ejecución del flujo de trabajo
 on:
   push:
-    branches: "*" # Se ejecuta cuando se hace push en cualquier rama
+    branches:
+      - "*" # Se ejecuta cuando se hace push en cualquier rama
   pull_request:
-    branches: main
-      dev
+    branches:
+      - main
+      - dev
 
-#Definición del trabajo
+# Definición del trabajo
 jobs:
   build:
     runs-on: ubuntu-latest # El trabajo se ejecuta en una máquina con la última versión de Ubuntu
