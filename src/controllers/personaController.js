@@ -139,9 +139,15 @@ class PersonaController {
         error.statusCode = 409;
         throw error;
       }
-      // Crea un nuevo registro de persona en la base de datos
-      await Persona.create(personaData);
+      const p = await Persona.create(personaData);
 
+      for (const element of personaData.servicios) {
+        const servicioxpersona = {
+          idPersona: p.id,
+          idServicio: element,
+        };
+        await ServicioXPersona.create(servicioxpersona);
+      }
       res.status(201).json({
         message: "Persona creada con exito",
       });
