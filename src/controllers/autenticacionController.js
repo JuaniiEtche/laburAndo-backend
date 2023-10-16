@@ -1,7 +1,6 @@
 const bcrypt = require("bcrypt");
 const Persona = require("../models/Persona");
 const Jwt = require("../models/Jwt");
-
 class AutenticacionController {
   async login(req, res, next) {
     const campoIdentificador = req.body["email"] || req.body["usuario"];

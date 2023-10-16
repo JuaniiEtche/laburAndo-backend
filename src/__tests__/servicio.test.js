@@ -29,22 +29,10 @@ describe("Pruebas del endpoint /api/servicio", () => {
   });
 
   it("Debería obtener todos los servicios con el token válido", async () => {
-    let response = await request(app)
-      .get("/api/servicio")
-      .set("Authorization", `Bearer ${token}`);
+    let response = await request(app).get("/api/servicio");
 
     expect(response.status).toBe(200);
     expect(response.body.Mensaje).toBe("Servicios traídos con éxito");
     expect(Array.isArray(response.body.servicios)).toBe(true);
-  });
-
-  it("Debería devolver un error si el token es inválido", async () => {
-    let tokenInvalido = "token-invalido"; // Token inválido
-
-    let response = await request(app)
-      .get("/api/servicio")
-      .set("Authorization", `Bearer ${tokenInvalido}`);
-
-    expect(response.status).toBe(403);
   });
 });

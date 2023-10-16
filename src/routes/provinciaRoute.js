@@ -5,12 +5,8 @@ const Jwt = require("../models/Jwt.js");
 const provinciaRouter = express.Router();
 
 // Ruta para obtener todas las provincias con manejo de errores
-provinciaRouter.get(
-  "/provincia",
-  Jwt.verificarToken,
-  async (req, res, next) => {
-    await provinciaController.traerProvincias(req, res, next);
-  }
-);
+provinciaRouter.get("/provincia", async (req, res, next) => {
+  await provinciaController.traerProvincias(req, res, next);
+});
 
 module.exports = provinciaRouter;
