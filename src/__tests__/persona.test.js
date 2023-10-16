@@ -50,6 +50,7 @@ describe("Pruebas del endpoint /api/usuario", () => {
       imagenAdjunta: null,
       descripcion: null,
       idLocalidad: localidad.id,
+      servicios: [],
     };
 
     let response = await request(app).post("/api/usuario").send(nuevaPersona);
@@ -80,6 +81,7 @@ describe("Pruebas del endpoint /api/usuario", () => {
       imagenAdjunta: null,
       descripcion: null,
       idLocalidad: localidad.id,
+      servicios: [],
     };
 
     let personaCreada = await Persona.create(nuevaPersona);
@@ -94,6 +96,7 @@ describe("Pruebas del endpoint /api/usuario", () => {
       imagenAdjunta: null,
       descripcion: null,
       idLocalidad: localidad.id,
+      servicios: [],
     };
 
     let response = await request(app)
@@ -118,6 +121,7 @@ describe("Pruebas del endpoint /api/usuario", () => {
       imagenAdjunta: null,
       descripcion: null,
       idLocalidad: localidad.id,
+      servicios: [],
     };
 
     let personaCreada = await Persona.create(nuevaPersona);
@@ -132,6 +136,7 @@ describe("Pruebas del endpoint /api/usuario", () => {
       imagenAdjunta: null,
       descripcion: null,
       idLocalidad: localidad.id,
+      servicios: [],
     };
 
     let response = await request(app)
@@ -156,6 +161,7 @@ describe("Pruebas del endpoint /api/usuario", () => {
       imagenAdjunta: null,
       descripcion: null,
       idLocalidad: localidad.id,
+      servicios: [],
     };
 
     let personaCreada = await Persona.create(nuevaPersona);
@@ -170,6 +176,7 @@ describe("Pruebas del endpoint /api/usuario", () => {
       imagenAdjunta: null,
       descripcion: null,
       idLocalidad: localidad.id,
+      servicios: [],
     };
 
     let response = await request(app)
