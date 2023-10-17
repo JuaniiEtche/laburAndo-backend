@@ -20,4 +20,20 @@ personaRouter.get(
   }
 );
 
+personaRouter.get(
+  "/usuario/telefono/:telefono",
+  Jwt.verificarToken,
+  async (req, res, next) => {
+    await personaController.buscarPorTelefono(req, res, next);
+  }
+);
+
+personaRouter.get(
+  "/usuario/nombreUsuario/:username",
+  Jwt.verificarToken,
+  async (req, res, next) => {
+    await personaController.buscarPorUsuario(req, res, next);
+  }
+);
+
 module.exports = personaRouter;
