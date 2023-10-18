@@ -31,16 +31,70 @@ class resenaController {
     }
   }
 
+  async eliminarResenia(req, res, next) {
+    try {
+      const id = req.params.id;
+      if (!(await this.existeResenia(id))) {
+        let e = new Error(`No se encontro la resenia asociada`);
+        e.statusCode = 409;
+        throw e;
+      }
+      await Resena.destroy({
+        where: {
+          id: id,
+        },
+      });
+      res.status(201).json({
+        Mensaje: "Resenia eliminada con exito",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async aceptarResenia(req, res, next) {
+    try {
+      const ReseniaData = req.body;
+      const clavesNecesarias = ["id", "calificacion", "fecha", "descripcion"];
+      clavesNecesarias.forEach((element) => {
+        if (!ReseniaData.hasOwnProperty(element)) {
+          let e = new Error(
+            `Debe proporcionarse el atributo '${element}' en la solicitud`
+          );
+          e.statusCode = 400;
+          throw e;
+        }
+      });
+      if (!(await this.existeResenia(ReseniaData.id))) {
+        let e = new Error(`No se encontro la resenia asociada`);
+        e.statusCode = 409;
+        throw e;
+      }
+      await Resena.update(
+        {
+          descripcion: ReseniaData.descripcion,
+          calificacion: ReseniaData.calificacion,
+          fecha: ReseniaData.fecha,
+          estado: "aceptado",
+        },
+        {
+          where: {
+            id: ReseniaData.id,
+          },
+        }
+      );
+      res.status(201).json({
+        Mensaje: "Resenia aceptada con exito",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async altaResenia(req, res, next) {
     try {
       const ReseniaData = req.body;
-      const clavesNecesarias = [
-        "calificacion",
-        "descripcion",
-        "fecha",
-        "idCalificador",
-        "idCalificado",
-      ];
+      const clavesNecesarias = ["idCalificador", "idCalificado"];
       clavesNecesarias.forEach((element) => {
         if (!ReseniaData.hasOwnProperty(element)) {
           let e = new Error(
@@ -74,13 +128,27 @@ class resenaController {
         e.statusCode = 409;
         throw e;
       }
-
+      ReseniaData.estado = "pendiente";
       await Resena.create(ReseniaData);
       res.status(201).json({
         Mensaje: "Resenia creada con exito",
       });
     } catch (error) {
       next(error);
+    }
+  }
+
+  async existeResenia(idResenia) {
+    try {
+      const resenia = await Resena.findByPk(idResenia);
+      if (resenia != null) {
+        return true;
+      }
+      return false;
+    } catch (e) {
+      e.message = "No existe la resenia asociada";
+      e.statusCode = 404;
+      throw e;
     }
   }
 
