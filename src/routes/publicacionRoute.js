@@ -22,6 +22,33 @@ publicacionRouter.get(
   }
 );
 
+// Ruta para obtener una publicacion por localidad
+publicacionRouter.get(
+  "/publicacion/localidad/:idLocalidad",
+  Jwt.verificarToken,
+  async (req, res, next) => {
+    await publicacionController.buscarPorLocalidad(req, res, next);
+  }
+);
+
+// Ruta para obtener una publicacion por servicio
+publicacionRouter.get(
+  "/publicacion/servicio/:idServicio",
+  Jwt.verificarToken,
+  async (req, res, next) => {
+    await publicacionController.buscarPorServicio(req, res, next);
+  }
+);
+
+// Ruta para obtener una publicacion por servicio y localidad
+publicacionRouter.get(
+  "/publicacion/servicio-y-localidad/:idServicio/:idLocalidad",
+  Jwt.verificarToken,
+  async (req, res, next) => {
+    await publicacionController.buscarPorServicioYLocalidad(req, res, next);
+  }
+);
+
 // Ruta para obtener todas las publicaciones con manejo de errores
 publicacionRouter.get(
   "/publicacion",
