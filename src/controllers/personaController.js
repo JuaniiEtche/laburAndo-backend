@@ -47,6 +47,84 @@ class PersonaController {
     }
   }
 
+  async buscarPorTelefono(req, res, next) {
+    try {
+      const telefono = req.params.telefono;
+      const usuario = await Persona.findOne({
+        where: { telefono: telefono },
+        include: [
+          {
+            model: Localidad,
+            as: "localidad",
+            attributes: ["nombre"],
+            include: [
+              {
+                model: Provincia,
+                as: "provincia",
+                attributes: ["nombre"],
+              },
+            ],
+          },
+          {
+            model: Servicio,
+            as: "servicios",
+            through: {
+              attributes: [],
+            },
+            attributes: ["nombre", "descripcion"],
+          },
+        ],
+        attributes: { exclude: ["idLocalidad", "clave"] },
+      });
+
+      if (!usuario) {
+        return res.status(404).json({ message: "Persona no encontrada" });
+      }
+      res.json(usuario);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async buscarPorUsuario(req, res, next) {
+    try {
+      const username = req.params.username;
+      const usuario = await Persona.findOne({
+        where: { usuario: username },
+        include: [
+          {
+            model: Localidad,
+            as: "localidad",
+            attributes: ["nombre"],
+            include: [
+              {
+                model: Provincia,
+                as: "provincia",
+                attributes: ["nombre"],
+              },
+            ],
+          },
+          {
+            model: Servicio,
+            as: "servicios",
+            through: {
+              attributes: [],
+            },
+            attributes: ["nombre", "descripcion"],
+          },
+        ],
+        attributes: { exclude: ["idLocalidad", "clave"] },
+      });
+
+      if (!usuario) {
+        return res.status(404).json({ message: "Persona no encontrada" });
+      }
+      res.json(usuario);
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async obtenerPersonas(req, res, next) {
     try {
       let usuarios = await Persona.findAll({
