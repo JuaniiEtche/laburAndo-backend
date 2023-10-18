@@ -40,6 +40,15 @@ publicacionRouter.get(
   }
 );
 
+// Ruta para obtener una publicacion por servicio y localidad
+publicacionRouter.get(
+  "/publicacion/servicio-y-localidad/:idServicio/:idLocalidad",
+  Jwt.verificarToken,
+  async (req, res, next) => {
+    await publicacionController.buscarPorServicioYLocalidad(req, res, next);
+  }
+);
+
 // Ruta para obtener todas las publicaciones con manejo de errores
 publicacionRouter.get(
   "/publicacion",
