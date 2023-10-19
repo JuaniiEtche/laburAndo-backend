@@ -2,8 +2,69 @@
 const Persona = require("../models/Persona");
 const Publicacion = require("../models/Publicacion");
 const Resena = require("../models/Resena");
+const Servicio = require("../models/Servicio");
 
 class resenaController {
+  async obtenerResenasAceptadasPorCalificado(idCalificado, res, next) {
+    try {
+      const existePersona = await this.ExistePersonaPorId(idCalificado);
+      if (!existePersona) {
+        let e = new Error("No existe la persona calificadora asociada");
+        e.statusCode = 404;
+        throw e;
+      }
+      const resenias = await Resena.findAll({
+        where: { idCalificado: idCalificado, estado: "aceptado" },
+        include: [
+          {
+            model: Persona,
+            as: "calificador",
+            attributes: ["id", "nombre", "apellido"],
+          },
+        ],
+        attributes: ["id", "descripcion", "fecha", "calificacion"],
+      });
+
+      res.send(resenias);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async obtenerResenasPendientesPorCalificador(idCalificador, res, next) {
+    try {
+      const existePersona = await this.ExistePersonaPorId(idCalificador);
+      if (!existePersona) {
+        let e = new Error("No existe la persona calificadora asociada");
+        e.statusCode = 404;
+        throw e;
+      }
+      const resenias = await Resena.findAll({
+        where: { idCalificador: idCalificador, estado: "pendiente" },
+        include: [
+          {
+            model: Persona,
+            as: "calificado",
+            attributes: ["id", "nombre", "apellido", "telefono"],
+            include: [
+              {
+                model: Servicio,
+                as: "servicios",
+                attributes: ["nombre"],
+                through: { attributes: [] },
+              },
+            ],
+          },
+        ],
+        attributes: ["id"],
+      });
+
+      res.send(resenias);
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async obtenerResenas(req, res, next) {
     try {
       const idPersona = req.params.idPersona;
