@@ -320,7 +320,7 @@ class publicacionController {
         e.statusCode = 409;
         throw e;
       }
-      await Resena.destroy({
+      await Publicacion.destroy({
         where: {
           id: id,
         },
