@@ -20,6 +20,30 @@ const Persona = sequelize.define(
   { modelName: "Persona", tableName: "persona", timestamps: false }
 );
 
+Persona.prototype.getCalificacionGeneral = async function () {
+  const Resena = require("../models/Resena.js");
+  const reseniasAsociadas = await Resena.findAll({
+    where: {
+      idCalificado: this.id,
+      estado: "aceptado",
+    },
+  });
+
+  if (reseniasAsociadas.length === 0) {
+    return 0;
+  }
+
+  const totalCalificacion = reseniasAsociadas.reduce(
+    (total, resena) => total + resena.calificacion,
+    0
+  );
+  const calificacionPromedio = Math.floor(
+    totalCalificacion / reseniasAsociadas.length
+  );
+
+  return calificacionPromedio;
+};
+
 Persona.beforeCreate(async (persona) => {
   const saltRounds = 10;
   const hashedPassword = await bcrypt.hash(persona.clave, saltRounds);
