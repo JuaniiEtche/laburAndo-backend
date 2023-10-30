@@ -326,7 +326,7 @@ class publicacionController {
         },
       });
       res.status(201).json({
-        Mensaje: "Resenia eliminada con exito",
+        Mensaje: "publicacion eliminada con exito",
       });
     } catch (error) {
       next(error);
