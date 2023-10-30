@@ -255,6 +255,67 @@ class publicacionController {
     }
   }
 
+  // Método para buscar publicaciones por usuario
+  async buscarPorUsuario(req, res, next) {
+    try {
+      const idUsuario = req.params.idUsuario;
+      const publicaciones = await Publicacion.findAll({
+        where: { idPersona: idUsuario },
+        include: [
+          {
+            model: Localidad,
+            as: "localidad",
+            attributes: ["nombre"],
+            include: [
+              {
+                model: Provincia,
+                as: "provincia",
+                attributes: ["nombre"],
+              },
+            ],
+          },
+          {
+            model: Servicio,
+            as: "servicio",
+            attributes: ["nombre"],
+          },
+          {
+            model: Persona,
+            as: "persona",
+            attributes: [
+              "id",
+              "usuario",
+              "imagenAdjunta",
+              "nombre",
+              "telefono",
+            ],
+          },
+        ],
+        attributes: {
+          exclude: [
+            "idLocalidad",
+            "idPersona",
+            "idProvincia",
+            "idServicio",
+            "duracionDias",
+          ],
+        },
+      });
+
+      if (!publicaciones) {
+        return res.status(404).json({
+          message: "No se encontraron publicaciones para este servicio",
+        });
+      }
+      res.status(200).json({
+        Mensaje: "Publicaciones encontradas con éxito",
+        publicaciones: publicaciones,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   // Función asincrónica para dar de alta una publicación
   async altaPublicacion(req, res, next) {
     try {
