@@ -180,12 +180,10 @@ class publicacionController {
       });
 
       if (!publicaciones) {
-        return res
-          .status(404)
-          .json({
-            message:
-              "No se encontraron publicaciones para este servicio y localidad",
-          });
+        return res.status(404).json({
+          message:
+            "No se encontraron publicaciones para este servicio y localidad",
+        });
       }
       res.status(200).json({
         Mensaje: "Publicaciones encontradas con éxito",
@@ -311,6 +309,27 @@ class publicacionController {
       e.message = "Error al verificar si existe la publicacion mediante ID";
       e.statusCode = 500;
       throw e;
+    }
+  }
+
+  async eliminarPublicacion(req, res, next) {
+    try {
+      const id = req.params.idPublicacion;
+      if (!(await this.ExistePublicacionPorId(id))) {
+        let e = new Error(`No se encontro la publicacion asociada`);
+        e.statusCode = 409;
+        throw e;
+      }
+      await Publicacion.destroy({
+        where: {
+          id: id,
+        },
+      });
+      res.status(201).json({
+        Mensaje: "publicacion eliminada con exito",
+      });
+    } catch (error) {
+      next(error);
     }
   }
 }
