@@ -4,8 +4,68 @@ const Persona = require("../models/Persona");
 const Publicacion = require("../models/Publicacion");
 const Servicio = require("../models/Servicio");
 const Provincia = require("../models/Provincia");
+const Resena = require("../models/Resena");
+const SolicitudTrabajo = require("../models/SolicitudTrabajo");
 class publicacionController {
   //Funcion asincronica para obtener una publicacion
+
+  async obtenerPostuladosPorPublicacion(idPublicacion, res, next) {
+    try {
+      const existePublicacion = await this.ExistePublicacionPorId(
+        idPublicacion
+      );
+      if (!existePublicacion) {
+        let e = new Error(`No existe la publicacion asociada`);
+        e.statusCode = 404;
+        throw e;
+      }
+      const publicacion = await Publicacion.findByPk(idPublicacion, {
+        attributes: [],
+        include: [
+          {
+            model: Persona,
+            as: "solicitudes",
+            attributes: {
+              exclude: ["idLocalidad", "descripcion", "clave"],
+            },
+            through: { attributes: [] },
+            include: [
+              {
+                model: Servicio,
+                as: "servicios",
+                attributes: ["nombre"],
+                through: { attributes: [] },
+              },
+            ],
+          },
+        ],
+      });
+      const arregloSolicitadores = [];
+
+      for (let i = 0; i < publicacion.solicitudes.length; i++) {
+        const solicitador = publicacion.solicitudes[i];
+        const persona = await Persona.findByPk(solicitador.id);
+        const calificacionPromedio = await persona.getCalificacionGeneral();
+        solicitador.calificacionPromedio = calificacionPromedio;
+        arregloSolicitadores.push(solicitador);
+      }
+      const arreglo = arregloSolicitadores.map((solicitador) => ({
+        id: solicitador.id,
+        nombre: solicitador.nombre,
+        apellido: solicitador.apellido,
+        email: solicitador.email,
+        telefono: solicitador.telefono,
+        usuario: solicitador.usuario,
+        imagenAdjunta: solicitador.imagenAdjunta,
+        servicios: solicitador.servicios,
+        calificacionPromedio: solicitador.calificacionPromedio,
+      }));
+
+      res.status(200).json(arreglo);
+    } catch (error) {
+      next(error);
+    }
+  }
 
   async obtenerPublicacion(req, res, next) {
     try {
@@ -180,12 +240,10 @@ class publicacionController {
       });
 
       if (!publicaciones) {
-        return res
-          .status(404)
-          .json({
-            message:
-              "No se encontraron publicaciones para este servicio y localidad",
-          });
+        return res.status(404).json({
+          message:
+            "No se encontraron publicaciones para este servicio y localidad",
+        });
       }
       res.status(200).json({
         Mensaje: "Publicaciones encontradas con éxito",
