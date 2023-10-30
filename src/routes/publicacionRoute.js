@@ -63,7 +63,15 @@ publicacionRouter.get(
   "/publicacion",
   Jwt.verificarToken,
   async (req, res, next) => {
-    await publicacionController.traerPublicaciones(req, res, next);
+    if (req.query.idPublicacion) {
+      await publicacionController.obtenerPostuladosPorPublicacion(
+        req.query.idPublicacion,
+        res,
+        next
+      );
+    } else {
+      await publicacionController.traerPublicaciones(req, res, next);
+    }
   }
 );
 
