@@ -58,4 +58,12 @@ publicacionRouter.get(
   }
 );
 
+publicacionRouter.delete(
+  "/publicacion/:idPublicacion",
+  Jwt.verificarToken,
+  async (req, res, next) => {
+    await publicacionController.eliminarPublicacion(req, res, next);
+  }
+);
+
 module.exports = publicacionRouter;
