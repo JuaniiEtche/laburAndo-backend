@@ -8,6 +8,7 @@ const servicioRouter = require("./src/routes/servicioRoute");
 const autenticacionRouter = require("./src/routes/autenticacionRoute");
 const resenaRoute = require("./src/routes/resenaRoute");
 const ServicioXPersonaRoute = require("./src/routes/ServicioXPersonaRoute");
+const SolicitudTrabajoRoute = require("./src/routes/SolicitudTrabajoRoute");
 
 // Definir rutas principales
 router.use(personaRouter);
@@ -18,4 +19,6 @@ router.use(servicioRouter);
 router.use(autenticacionRouter);
 router.use(resenaRoute);
 router.use(ServicioXPersonaRoute);
+router.use(SolicitudTrabajoRoute)
+
 module.exports = router;
