@@ -9,4 +9,8 @@ SolicitudTrabajoRoute.delete("/SolicitudTrabajo/:idPersona/:idPublicacion",Jwt.v
   await SolicitudTrabajoController.desvincular(req, res, next);
 });
 
+SolicitudTrabajoRoute.post("/SolicitudTrabajo/:idPersona/:idPublicacion",Jwt.verificarToken, async (req, res, next) => {
+    await SolicitudTrabajoController.vincular(req, res, next);
+  });
+
 module.exports = SolicitudTrabajoRoute;
