@@ -23,6 +23,7 @@ class resenaController {
           },
         ],
         attributes: ["id", "descripcion", "fecha", "calificacion"],
+        order: [["id", "DESC"]],
       });
 
       res.send(resenias);
@@ -57,6 +58,7 @@ class resenaController {
           },
         ],
         attributes: ["id"],
+        order: [["id", "DESC"]],
       });
 
       res.send(resenias);
@@ -84,6 +86,7 @@ class resenaController {
             attributes: ["calificacion", "descripcion", "fecha"],
           },
         ],
+        order: [["id", "DESC"]],
       });
 
       res.json(usuario);

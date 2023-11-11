@@ -113,6 +113,7 @@ class publicacionController {
             "duracionDias",
           ],
         },
+        order: [["id", "DESC"]],
       });
 
       if (!publicaciones) {
@@ -177,6 +178,7 @@ class publicacionController {
             "duracionDias",
           ],
         },
+        order: [["id", "DESC"]],
       });
 
       if (!publicaciones) {
@@ -239,6 +241,7 @@ class publicacionController {
             "duracionDias",
           ],
         },
+        order: [["id", "DESC"]],
       });
 
       if (!publicaciones) {
@@ -285,6 +288,7 @@ class publicacionController {
             ],
           },
         ],
+        order: [["id", "DESC"]],
       });
       const arregloSolicitadores = [];
 
@@ -357,6 +361,7 @@ class publicacionController {
             "duracionDias",
           ],
         },
+        order: [["id", "DESC"]],
       });
 
       if (!publicaciones) {
