@@ -4,68 +4,8 @@ const Persona = require("../models/Persona");
 const Publicacion = require("../models/Publicacion");
 const Servicio = require("../models/Servicio");
 const Provincia = require("../models/Provincia");
-const Resena = require("../models/Resena");
-const SolicitudTrabajo = require("../models/SolicitudTrabajo");
 class publicacionController {
   //Funcion asincronica para obtener una publicacion
-
-  async obtenerPostuladosPorPublicacion(idPublicacion, res, next) {
-    try {
-      const existePublicacion = await this.ExistePublicacionPorId(
-        idPublicacion
-      );
-      if (!existePublicacion) {
-        let e = new Error(`No existe la publicacion asociada`);
-        e.statusCode = 404;
-        throw e;
-      }
-      const publicacion = await Publicacion.findByPk(idPublicacion, {
-        attributes: [],
-        include: [
-          {
-            model: Persona,
-            as: "solicitudes",
-            attributes: {
-              exclude: ["idLocalidad", "descripcion", "clave"],
-            },
-            through: { attributes: [] },
-            include: [
-              {
-                model: Servicio,
-                as: "servicios",
-                attributes: ["nombre"],
-                through: { attributes: [] },
-              },
-            ],
-          },
-        ],
-      });
-      const arregloSolicitadores = [];
-
-      for (let i = 0; i < publicacion.solicitudes.length; i++) {
-        const solicitador = publicacion.solicitudes[i];
-        const persona = await Persona.findByPk(solicitador.id);
-        const calificacionPromedio = await persona.getCalificacionGeneral();
-        solicitador.calificacionPromedio = calificacionPromedio;
-        arregloSolicitadores.push(solicitador);
-      }
-      const arreglo = arregloSolicitadores.map((solicitador) => ({
-        id: solicitador.id,
-        nombre: solicitador.nombre,
-        apellido: solicitador.apellido,
-        email: solicitador.email,
-        telefono: solicitador.telefono,
-        usuario: solicitador.usuario,
-        imagenAdjunta: solicitador.imagenAdjunta,
-        servicios: solicitador.servicios,
-        calificacionPromedio: solicitador.calificacionPromedio,
-      }));
-
-      res.status(200).json(arreglo);
-    } catch (error) {
-      next(error);
-    }
-  }
 
   async obtenerPublicacion(req, res, next) {
     try {
@@ -315,67 +255,6 @@ class publicacionController {
     }
   }
 
-  // Método para buscar publicaciones por usuario
-  async buscarPorUsuario(req, res, next) {
-    try {
-      const idUsuario = req.params.idUsuario;
-      const publicaciones = await Publicacion.findAll({
-        where: { idPersona: idUsuario },
-        include: [
-          {
-            model: Localidad,
-            as: "localidad",
-            attributes: ["nombre"],
-            include: [
-              {
-                model: Provincia,
-                as: "provincia",
-                attributes: ["nombre"],
-              },
-            ],
-          },
-          {
-            model: Servicio,
-            as: "servicio",
-            attributes: ["nombre"],
-          },
-          {
-            model: Persona,
-            as: "persona",
-            attributes: [
-              "id",
-              "usuario",
-              "imagenAdjunta",
-              "nombre",
-              "telefono",
-            ],
-          },
-        ],
-        attributes: {
-          exclude: [
-            "idLocalidad",
-            "idPersona",
-            "idProvincia",
-            "idServicio",
-            "duracionDias",
-          ],
-        },
-      });
-
-      if (!publicaciones) {
-        return res.status(404).json({
-          message: "No se encontraron publicaciones para este servicio",
-        });
-      }
-      res.status(200).json({
-        Mensaje: "Publicaciones encontradas con éxito",
-        publicaciones: publicaciones,
-      });
-    } catch (error) {
-      next(error);
-    }
-  }
-
   // Función asincrónica para dar de alta una publicación
   async altaPublicacion(req, res, next) {
     try {
@@ -409,6 +288,7 @@ class publicacionController {
           },
         ],
         attributes: ["id", "titulo", "fechaPublicacion"],
+        order: [["id", "DESC"]],
       });
       res.status(200).json({
         Mensaje: "Publicaciones traídas con éxito",
@@ -430,27 +310,6 @@ class publicacionController {
       e.message = "Error al verificar si existe la publicacion mediante ID";
       e.statusCode = 500;
       throw e;
-    }
-  }
-
-  async eliminarPublicacion(req, res, next) {
-    try {
-      const id = req.params.idPublicacion;
-      if (!(await this.ExistePublicacionPorId(id))) {
-        let e = new Error(`No se encontro la publicacion asociada`);
-        e.statusCode = 409;
-        throw e;
-      }
-      await Publicacion.destroy({
-        where: {
-          id: id,
-        },
-      });
-      res.status(201).json({
-        Mensaje: "publicacion eliminada con exito",
-      });
-    } catch (error) {
-      next(error);
     }
   }
 }
